@@ -7,5 +7,6 @@
 #include "disastrOS_semdescriptor.h"
 
 void internal_semPost(){
-  // do stuff :)
+	//ricorda di vedere ieee per i possibli errori 
+	//ricorda di testare la semopen 
 }

@@ -24,16 +24,16 @@ void internal_semOpen(){
 		assert(sem);
 		List_insert(&semaphores_list, semaphores_list.last, (ListItem*)sem);
 	}
-	//Now alloc the SemDescriptor and add it on fd 
+	
+	//Now alloc the SemDescriptor 
 	SemDescriptor* sem_desc = SemDescriptor_alloc(running->last_sem_fd,sem,running);
 	assert(sem_desc);
-	running->last_sem_fd+=1;
 	
-	//Then alloc SemDescriptorPtr for sem_desc
+	//Then alloc SemDescriptorPtr for sem_desc && update fd amd ptr
 	SemDescriptorPtr* sem_d_ptr = SemDescriptorPtr_alloc(sem_desc);
 	assert(sem_d_ptr);
-	
 	sem_desc->ptr = sem_d_ptr;
+	running->last_sem_fd+=1;
 
 	//Add sem_desc to the sem_descriptors list && link the ptr && insert sem
 	List_insert(&running->sem_descriptors, running->sem_descriptors.last, (ListItem*)sem_desc);
