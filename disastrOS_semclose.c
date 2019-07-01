@@ -12,7 +12,7 @@ void internal_semClose(){
   
   int myfd = running->syscall_args[0];
   
-  SemDescriptor* sem_desc = semDescriptorList_byFd(&running->sem_descriptors,myfd);
+  SemDescriptor* sem_desc = SemDescriptorList_byFd(&running->sem_descriptors,myfd);
   //Need to be sure 
   if(!sem_desc){
 	  running->syscall_retvalue = DSOS_ESEMCLOSE_SEMD_NOT_IN_PROCESS;
@@ -32,7 +32,7 @@ void internal_semClose(){
   //Before return the syscall success(0),check if there are another process that could be on sem
   if(sem->descriptors.size==0) {
 	  //cast
-	  sem = (Semaphore*)List_detach(&semaphores_list,(ListItem*)sem;
+	  sem = (Semaphore*)List_detach(&semaphores_list,(ListItem*)sem);
 	  assert(sem);
 	  Semaphore_free(sem);
   }
