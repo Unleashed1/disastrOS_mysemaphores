@@ -11,23 +11,30 @@
 void internal_semOpen(){
 	
 	//Looking for some possible errors 
-	//1. Check if the num. of the semaphores reached the MAX_NUM_SEMAPHORES (1024), probably no xp
-	if(Semaphore->count > MAX_NUM_SEMAPHORES){
-		running->syscall_retvalue = DSOS_ESYSCALL_OUT_OF_RANGE;
+	// Check if the num. of the semadescriptors has been reached, probably no xp
+	if(running->sem_descriptors.size >= MAX_NUM_SEMDESCRIPTORS_PER_PROCESS){
+		running->syscall_retvalue = DSOS_ESEMOPEN_OUT_OF_BOUND;
+		return;
+	}
+	//get an id for the sem from pcb
+	int id = running->syscall_args[0];
+	if(id<0) {
+		running->syscall_retvalue = DSOS_ESEMOPEN_SEMNUMVALUE;
 		return;
 	}
 	
-	//2. Check if the semaphore is already open  if not we add it in the list (we alloc first obv.)
-	Semaphore* sem = SemaphoreList_byId((SemaphoreList*)&semaphores_list, id);
-	if(!sem) {
+	// Check if the semaphore is already open  if not we add it in the list (we alloc first obv.)
+    Semaphore* sem = SemaphoreList_byId((SemaphoreList*)&semaphores_list, id);
+    if(!sem) {
 		sem = Semaphore_alloc(id, 1);
 		assert(sem);
 		List_insert(&semaphores_list, semaphores_list.last, (ListItem*)sem);
 	}
-	
+
 	//Now alloc the SemDescriptor 
 	SemDescriptor* sem_desc = SemDescriptor_alloc(running->last_sem_fd,sem,running);
 	assert(sem_desc);
+	
 	
 	//Then alloc SemDescriptorPtr for sem_desc && update fd amd ptr
 	SemDescriptorPtr* sem_d_ptr = SemDescriptorPtr_alloc(sem_desc);
