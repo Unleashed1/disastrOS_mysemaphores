@@ -8,10 +8,10 @@
 #include "disastrOS_globals.h"
 
 void internal_semWait(){
-	/as usual we take the fd form the pcb  
-	int fd = running->syscall[0];
-	SemDescriptor* sem_desc = SemDescriptorList_byFd(&running->sem_descriptor,fd);
-	if(!sem_d){
+	//as usual we take the fd form the pcb  
+	int fd = running->syscall_args[0];
+	SemDescriptor* sem_desc = SemDescriptorList_byFd(&running->sem_descriptors,fd);
+	if(!sem_desc){
 		running->syscall_retvalue = DSOS_ESEMWAIT_SEMDESC_IS_NOT_IN_PROCESS;
 		return ;
 	}
@@ -25,12 +25,13 @@ void internal_semWait(){
 	PCB* temp = running;
 	if(sem->count<0){
 		SemDescriptorPtr* sem_desc_ptr = SemDescriptorPtr_alloc(sem_desc);
-		assert(sem_d_Ptr);
-		List_insert(&sem->waiting_descriptors, sem->waiting_descriptors-last, (ListItem*)sem_desc_ptr
+		assert(sem_desc_ptr);
+		List_insert(&sem->waiting_descriptors, sem->waiting_descriptors.last, (ListItem*)sem_desc_ptr);
 		//change the running status 
 		running->status = Waiting; 
-		List_insert(&sem->waiting_list, waiting_list.last, (ListItem*)running);
+		List_insert(&sem->waiting_descriptors, waiting_list.last, (ListItem*)running);
 		running = (PCB*)List_detach(&ready_list,ready_list.first);
-		running->status = running ; 
+		running->status = Running ; 
 	}
+    running->syscall_retvalue = 0;
 }
