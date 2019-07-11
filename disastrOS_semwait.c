@@ -22,7 +22,7 @@ void internal_semWait(){
 	assert(sem);
 	sem->count--; 
 	// counter decreased now insert in waiting list 
-	PCB* temp = running;
+	PCB* tmp = running;
 	if(sem->count<0){
 		SemDescriptorPtr* sem_desc_ptr = SemDescriptorPtr_alloc(sem_desc);
 		assert(sem_desc_ptr);
@@ -33,5 +33,5 @@ void internal_semWait(){
 		running = (PCB*)List_detach(&ready_list,ready_list.first);
 		running->status = Running ; 
 	}
-    running->syscall_retvalue = 0;
+    tmp->syscall_retvalue = 0;
 }

@@ -24,10 +24,10 @@ void internal_semClose(){
   List_detach(&running->sem_descriptors, (ListItem*)sem_desc);
   Semaphore* sem = sem_desc->semaphore;
   assert(sem);
-  SemDescriptor_free(sem_desc);
   SemDescriptorPtr* sem_desc_ptr = (SemDescriptorPtr*)List_detach(&sem->descriptors, (ListItem*)(sem_desc->ptr));
   assert(sem_desc_ptr);
   SemDescriptorPtr_free(sem_desc_ptr);
+  SemDescriptor_free(sem_desc);
   
   //Before return the syscall success(0),check if there are another process that could be on sem
   if(sem->descriptors.size==0) {

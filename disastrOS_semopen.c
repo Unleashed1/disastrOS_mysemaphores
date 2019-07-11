@@ -37,14 +37,13 @@ void internal_semOpen(){
 	
 	
 	//Then alloc SemDescriptorPtr for sem_desc && update fd amd ptr
+        running->last_sem_fd++;
 	SemDescriptorPtr* sem_d_ptr = SemDescriptorPtr_alloc(sem_desc);
 	assert(sem_d_ptr);
 	sem_desc->ptr = sem_d_ptr;
-	running->last_sem_fd+=1;
 
 	//Add sem_desc to the sem_descriptors list && link the ptr && insert sem
 	List_insert(&running->sem_descriptors, running->sem_descriptors.last, (ListItem*)sem_desc);
-	sem_desc->ptr = sem_d_ptr;
 	List_insert(&sem->descriptors, sem->descriptors.last, (ListItem*)sem_d_ptr);
   
 	//Finally return the value of the syscall
