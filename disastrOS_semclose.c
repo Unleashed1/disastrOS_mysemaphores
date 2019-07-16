@@ -15,8 +15,8 @@ void internal_semClose(){
   SemDescriptor* sem_desc = SemDescriptorList_byFd(&running->sem_descriptors,myfd);
   //Need to be sure 
   if(!sem_desc){
-	  running->syscall_retvalue = DSOS_ESEMCLOSE_SEMDESC_IS_NOT_IN_PROCESS;
-	  return;
+	running->syscall_retvalue = DSOS_ESEMCLOSE_SEMDESC_IS_NOT_IN_PROCESS;
+	return;
   }
   
   //Now remove it from the list, remove the ptr fom the list of descriptors && free resources
