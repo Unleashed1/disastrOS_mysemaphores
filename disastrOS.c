@@ -147,6 +147,8 @@ void disastrOS_start(void (*f)(void*), void* f_args, char* logfile){
   Timer_init();
   Resource_init();
   Descriptor_init();
+  Semaphore_init();
+  SemDescriptor_init();
   init_pcb=0;
 
   // populate the vector of syscalls and number of arguments for each syscall
@@ -260,21 +262,6 @@ void disastrOS_start(void (*f)(void*), void* f_args, char* logfile){
   setcontext(&running->cpu_state);
 }
 
-int disastrOS_semOpen(int id) {
-  return disastrOS_syscall(DSOS_CALL_SEMOPEN, id);
-}
-
-int disastrOS_semClose(int fd) {
-  return disastrOS_syscall(DSOS_CALL_SEMCLOSE, fd);
-}
-
-int disastrOS_semPost(int fd) {
-  return disastrOS_syscall(DSOS_CALL_SEMPOST, fd);
-}
-
-int disastrOS_semWait(int fd) {
-  return disastrOS_syscall(DSOS_CALL_SEMWAIT, fd);
-}
 int disastrOS_fork(){
   return disastrOS_syscall(DSOS_CALL_FORK);
 }
@@ -322,7 +309,21 @@ int disastrOS_destroyResource(int resource_id) {
   return disastrOS_syscall(DSOS_CALL_DESTROY_RESOURCE, resource_id);
 }
 
+int disastrOS_semOpen(int id) {
+  return disastrOS_syscall(DSOS_CALL_SEMOPEN, id);
+}
 
+int disastrOS_semClose(int fd) {
+  return disastrOS_syscall(DSOS_CALL_SEMCLOSE, fd);
+}
+
+int disastrOS_semPost(int fd) {
+  return disastrOS_syscall(DSOS_CALL_SEMPOST, fd);
+}
+
+int disastrOS_semWait(int fd) {
+  return disastrOS_syscall(DSOS_CALL_SEMWAIT, fd);
+}
 
 void disastrOS_printStatus(){
   printf("****************** DisastrOS ******************\n");

@@ -21,15 +21,13 @@ void sleeperFunction(void* args){
 void childFunction(void* args){
 //first and second for test the open and close and the rest of this func is going to test the shared sem situation
   printf("Hello, I am the child function %d\n",disastrOS_getpid());
-  	printf("ao");
-
   for (int i=0; i<(disastrOS_getpid()+1); ++i){
     int fs = disastrOS_semOpen(i);
     printf("%d : Hello i am the semaphore!\n",disastrOS_getpid());
     assert(fs >= 0);
   }
   disastrOS_printStatus();
-  for (int i=0; i<disastrOS_getpid(); ++i){
+  for (int i=0; i<disastrOS_getpid()+1; ++i){
     int fs = disastrOS_semClose(i);
     printf("%d : My job here is done\n",disastrOS_getpid());
     assert(!fs);
