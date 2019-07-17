@@ -24,8 +24,8 @@ void internal_semOpen(){
 	}
 	
 	// Check if the semaphore is already open  if not we add it in the list (we alloc first obv.)
-    Semaphore* sem = SemaphoreList_byId((SemaphoreList*)&semaphores_list, id);
-    if(!sem) {
+	Semaphore* sem = SemaphoreList_byId((SemaphoreList*)&semaphores_list, id);
+	if(!sem) {
 		sem = Semaphore_alloc(id, 1);
 		assert(sem);
 		List_insert(&semaphores_list, semaphores_list.last, (ListItem*)sem);
@@ -37,7 +37,7 @@ void internal_semOpen(){
 	
 	
 	//Then alloc SemDescriptorPtr for sem_desc && update fd amd ptr
-        running->last_sem_fd++;
+    running->last_sem_fd++;
 	SemDescriptorPtr* sem_d_ptr = SemDescriptorPtr_alloc(sem_desc);
 	assert(sem_d_ptr);
 	sem_desc->ptr = sem_d_ptr;

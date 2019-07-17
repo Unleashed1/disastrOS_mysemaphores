@@ -1,3 +1,4 @@
+
 #include <sys/types.h>
 #include <sys/time.h>
 #include <assert.h>
@@ -22,7 +23,7 @@ ListHead ready_list;
 ListHead waiting_list;
 ListHead zombie_list;
 ListHead timer_list;
-
+int sh_sem;
 // a resource can be a device, a file or an ipc thing
 ListHead resources_list;
 
@@ -259,6 +260,21 @@ void disastrOS_start(void (*f)(void*), void* f_args, char* logfile){
   setcontext(&running->cpu_state);
 }
 
+int disastrOS_semOpen(int id) {
+  return disastrOS_syscall(DSOS_CALL_SEMOPEN, id);
+}
+
+int disastrOS_semClose(int fd) {
+  return disastrOS_syscall(DSOS_CALL_SEMCLOSE, fd);
+}
+
+int disastrOS_semPost(int fd) {
+  return disastrOS_syscall(DSOS_CALL_SEMPOST, fd);
+}
+
+int disastrOS_semWait(int fd) {
+  return disastrOS_syscall(DSOS_CALL_SEMWAIT, fd);
+}
 int disastrOS_fork(){
   return disastrOS_syscall(DSOS_CALL_FORK);
 }
@@ -270,6 +286,7 @@ int disastrOS_wait(int pid, int *retval){
 void disastrOS_exit(int exitval) {
   disastrOS_syscall(DSOS_CALL_EXIT, exitval);
 }
+
 
 void disastrOS_preempt() {
   disastrOS_syscall(DSOS_CALL_PREEMPT);

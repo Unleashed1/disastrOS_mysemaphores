@@ -5,7 +5,7 @@
 #include "disastrOS_syscalls.h"
 #include "disastrOS_semaphore.h"
 #include "disastrOS_semdescriptor.h"
-
+#include "disastrOS_globals.h"
 void internal_semClose(){
   //First of all take the fd of the semDescriptor that we wants to close(check the list)
   

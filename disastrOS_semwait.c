@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <unistd.h>
+#include <assert.h>
 #include <stdio.h>
 #include "disastrOS.h"
 #include "disastrOS_syscalls.h"
