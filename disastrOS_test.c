@@ -42,11 +42,11 @@ void childFunction(void* args){
   disastrOS_preempt();
   fs = disastrOS_semPost(fd);
   assert(!fs);
-  printf("AO it's green levate");
+  printf("AO it's green levate\n");
   disastrOS_printStatus();
   fs = disastrOS_semClose(fd);
   assert(!fs);
-  printf("Bella rega %d ve saluto \n",disastrOS_getpid());
+  printf("Bella rega so %d ve saluto \n",disastrOS_getpid());
   disastrOS_exit(disastrOS_getpid()+1);
 }
 
