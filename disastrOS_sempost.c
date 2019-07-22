@@ -8,8 +8,7 @@
 #include "disastrOS_globals.h"
 
 
-void internal_semPost(){
-	int fd = running->syscall_args[0];
+void internal_semPost(){int fd = running->syscall_args[0];
 	SemDescriptor* sem_desc = SemDescriptorList_byFd(&running->sem_descriptors, fd);
 	if(!sem_desc){
 		running->syscall_retvalue = DSOS_ESEMPOST_SEMDESC_IS_NOT_IN_PROCESS;

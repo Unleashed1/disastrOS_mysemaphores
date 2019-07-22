@@ -13,7 +13,6 @@ void internal_semClose(){
   int myfd = running->syscall_args[0];
   
   SemDescriptor* sem_desc = SemDescriptorList_byFd(&running->sem_descriptors,myfd);
-  //Need to be sure 
   if(!sem_desc){
 	running->syscall_retvalue = DSOS_ESEMCLOSE_SEMDESC_IS_NOT_IN_PROCESS;
 	return;
